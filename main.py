@@ -53,9 +53,19 @@ async def read_items(params: Annotated[dict, Depends(common_parameters)]):
 def secret_data(token: Annotated[str, Depends(verify_token)]):
     return {"data": "The Krabby Patty formula is..."}
 
+
 # Phase 10: Path Operations & HTTP Status Codes
 from fastapi import status
 
 @app.post("/items/", status_code=status.HTTP_201_CREATED)
 def create_item(name: str):
     return {"name": name, "note": "Created!"}
+
+# Phase 11: apply everything in a professional endpoint
+class ProfileUpdate(BaseModel):
+    bio: str
+    age: int
+    
+@app.put("/users/{user_id}/update_profile/", status_code=202)
+def update_profile(user_id: int, profile: ProfileUpdate, notify : bool = False):
+    return {"user_id": user_id, "status": "updated"}
